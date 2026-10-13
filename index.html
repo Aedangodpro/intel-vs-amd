@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="unnamed.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student MyPortal</title>
+
+<script>
+function launchAboutBlank() {
+    // Open the about:blank tab
+    const win = window.open("about:blank");
+
+    // Inject your game into the blank tab
+    win.document.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Student MyPortal</title>
+            <style>
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+                    background: #000;
+                }
+                iframe {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    border: none;
+                }
+                #truffled-logo {
+                    position: fixed;
+                    bottom: 10px;
+                    right: 10px;
+                    width: 150px;
+                    height: 150px;
+                    cursor: pointer;
+                    z-index: 9999;
+                }
+            </style>
+        </head>
+        <body>
+            <iframe src="https://health.wvpreschool.org/games/geo/index.html" allowfullscreen></iframe>
+            <a href="health.wvpreschool.org" target="_blank">
+                <img id="truffled-logo" src="https://health.wvpreschool.org/png/logo.png" alt="Logo">
+            </a>
+        </body>
+        </html>
+    `);
+
+    win.document.close();
+
+    // NOW redirect the original GitHub page
+    window.location.href = "https://sites.google.com/stu.wvusd.org/studentportal/home";  // change this to whatever you want
+}
+</script>
+
+</head>
+<body onload="launchAboutBlank()">
+</body>
+</html>
