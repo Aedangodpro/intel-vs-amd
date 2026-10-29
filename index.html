@@ -1,68 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" href="student.png">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student MyPortal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Student MyPortal</title>
+  <link rel="icon" type="image/png" href="./student.png">
+  <style>
+    :root {
+      --panel: rgba(255, 255, 255, 0.05);
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #e9edf8;
+      --muted: #94a1c6;
+      --accent: #4f7cff;
+      --ok: #3ddc97;
+      --warn: #ffb454;
+      --err: #ff6b6b;
+    }
 
-<script>
-function launchAboutBlank() {
-    // Open the about:blank tab
-    const win = window.open("about:blank");
+    * { box-sizing: border-box; }
 
-    // Inject your game into the blank tab
-    win.document.write(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Student MyPortal</title>
-            <style>
-                html, body {
-                    margin: 0;
-                    padding: 0;
-                    width: 100%;
-                    height: 100%;
-                    overflow: hidden;
-                    background: #000;
-                }
-                iframe {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100vw;
-                    height: 100vh;
-                    border: none;
-                }
-                #truffled-logo {
-                    position: fixed;
-                    bottom: 10px;
-                    right: 10px;
-                    width: 150px;
-                    height: 150px;
-                    cursor: pointer;
-                    z-index: 9999;
-                }
-            </style>
-        </head>
-        <body>
-            <iframe src="=https://school.offshoreprivacy.org/games/geo/index.html" allowfullscreen></iframe>
-            <a href="https://school.offshoreprivacy.org" target="_blank">
-                <img id="truffled-logo" src="https://school.offshoreprivacy.org/png/logo.png" alt="Logo">
-            </a>
-        </body>
-        </html>
-    `);
+    html, body { height: 100%; }
 
-    win.document.close();
+    body {
+      margin: 0;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1100px 640px at 50% -15%, #1b2a5c 0%, #0b1020 58%, #060912 100%);
+      -webkit-font-smoothing: antialiased;
+    }
 
-    // NOW redirect the original GitHub page
-    window.location.href = "https://sites.google.com/stu.wvusd.org/studentportal/home";  // change this to whatever you want
-}
-</script>
+    .card {
+      width: min(560px, 100%);
+      padding: 30px 28px 24px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+    }
 
+    .logo {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 6px;
+    }
+
+    h1 {
+      margin: 16px 0 6px;
+      font-size: 1.6rem;
+      letter-spacing: -0.01em;
+    }
+
+    .status {
+      margin: 0 auto 22px;
+      max-width: 42ch;
+      min-height: 3.1em;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .status.ok { color: var(--ok); }
+    .status.warn { color: var(--warn); }
+    .status.err { color: var(--err); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .btn {
+      appearance: none;
+      font: inherit;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .btn:active { transform: translateY(1px); }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(180deg, #5c88ff, var(--accent));
+      box-shadow: 0 10px 26px rgba(79, 124, 255, 0.35);
+    }
+
+    .btn-ghost {
+      color: var(--text);
+      background: var(--panel);
+      border-color: var(--line);
+    }
+
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.1); }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    details {
+      margin-top: 22px;
+      text-align: left;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    summary:hover { color: var(--text); }
+
+    details ol {
+      margin: 10px 0 2px;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+
+    details li { margin-bottom: 7px; }
+
+    details b { color: var(--text); font-weight: 600; }
+
+    footer {
+      margin-top: 16px;
+      font-size: 0.75rem;
+      color: rgba(148, 161, 198, 0.75);
+    }
+
+    noscript p {
+      margin: 18px 0 0;
+      color: var(--warn);
+      font-size: 0.9rem;
+    }
+
+    noscript a, footer a { color: #9db8ff; }
+  </style>
 </head>
-<body onload="launchAboutBlank()">
+<body>
+  <main class="card">
+    <img class="logo" src="./student.png" alt="Student MyPortal" width="72" height="72">
+    <h1>Student MyPortal</h1>
+    <p id="status" class="status" role="status" aria-live="polite">Preparing…</p>
+
+    <div class="actions">
+      <button id="launch" class="btn btn-primary" type="button">Open session</button>
+      <button id="inline" class="btn btn-ghost" type="button">Open in this tab</button>
+    </div>
+
+    <details id="help">
+      <summary>Pop-ups blocked? Allow them once — here's how</summary>
+      <ol>
+        <li><b>Chrome / Edge:</b> open this page, click the blocked-pop-up icon at the right of the address bar, choose <b>Always allow pop-ups and redirects</b> from this site, then press <b>Done</b>.</li>
+        <li><b>Or settings:</b> Privacy and security → Site settings → <b>Pop-ups and redirects</b> → <b>Allowed to send pop-ups and use redirects</b> → <b>Add site</b> and paste <b id="host">this page's address</b>.</li>
+        <li><b>Safari:</b> Safari → Settings for This Website → <b>Pop-up Windows: Allow</b>.</li>
+        <li><b>Firefox:</b> click the blocked-pop-up bar → <b>Options</b> → <b>Allow pop-ups for this site</b>.</li>
+        <li>Reload this page and press <b>Open session</b> once. If a school-managed profile blocks pop-ups by policy, use <b>Open in this tab</b> instead.</li>
+      </ol>
+    </details>
+
+    <noscript>
+      <p>JavaScript is disabled, so the launcher can't start a session.
+        <a href="https://sites.google.com/stu.wvusd.org/studentportal/home">Continue to the student portal</a>.</p>
+    </noscript>
+
+    <footer>Tip: add <a href="?stay=1">?stay=1</a> to this URL to stay on this page after the session opens.</footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ------------------------------------------------------------------
+       * Edit this block only. Everything else works from these values.
+       * ------------------------------------------------------------------ */
+      var CONFIG = {
+        frame: 'https://school.offshoreprivacy.org/games/geo/index.html',
+        portal: 'https://sites.google.com/stu.wvusd.org/studentportal/home',
+        logo: 'https://school.offshoreprivacy.org/png/logo.png',
+        logoLink: 'https://school.offshoreprivacy.org',
+        title: 'Student MyPortal',
+        autoRedirect: true,   // send this tab to the portal once the window opened
+        redirectDelay: 800    // ms to wait so the new window can paint first
+      };
+      /* ------------------------------------------------------------------ */
+
+      var statusEl = document.getElementById('status');
+      var launchBtn = document.getElementById('launch');
+      var inlineBtn = document.getElementById('inline');
+      var helpEl = document.getElementById('help');
+      var hostEl = document.getElementById('host');
+
+      if (hostEl) hostEl.textContent = location.host || location.href;
+
+      function absoluteUrl(value) {
+        try {
+          var url = new URL(value, location.href);
+          return (url.protocol === 'http:' || url.protocol === 'https:') ? url.href : null;
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function escapeAttr(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function readOverrides() {
+        var params = new URLSearchParams(location.search);
+
+        var frame = params.get('frame');
+        if (frame) {
+          var resolved = absoluteUrl(frame);
+          if (resolved) CONFIG.frame = resolved;
+        }
+
+        if (params.has('stay') || params.get('redirect') === '0') {
+          CONFIG.autoRedirect = false;
+        }
+      }
+
+      function setStatus(message, tone) {
+        statusEl.textContent = message;
+        statusEl.className = 'status' + (tone ? ' ' + tone : '');
+      }
+
+      function isEmbedded() {
+        try { return window.top !== window.self; } catch (err) { return true; }
+      }
+
+      // The popup's own markup. No inline script here on purpose: this string is
+      // written into a same-origin about:blank document, so keep it inert.
+      function popupDocument() {
+        return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">'
+          + '<meta name="viewport" content="width=device-width,initial-scale=1">'
+          + '<title>' + escapeAttr(CONFIG.title) + '</title>'
+          + '<style>'
+          + 'html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#000}'
+          + '#app{position:fixed;inset:0}'
+          + 'iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}'
+          + '#hub{position:fixed;right:12px;bottom:12px;z-index:2;width:58px;height:58px;border-radius:50%;'
+          + 'display:grid;place-items:center;text-decoration:none;background:rgba(9,13,26,.72);'
+          + 'border:1px solid rgba(255,255,255,.2);box-shadow:0 10px 26px rgba(0,0,0,.55);'
+          + 'opacity:.5;transition:opacity .18s ease,transform .18s ease}'
+          + '#hub:hover,#hub:focus-visible{opacity:1;transform:translateY(-2px)}'
+          + '#hub img{width:36px;height:36px;object-fit:contain;display:block}'
+          + '</style></head><body>'
+          + '<div id="app"><iframe id="frame" src="' + escapeAttr(CONFIG.frame) + '" '
+          + 'title="Session" allowfullscreen '
+          + 'allow="fullscreen; autoplay; gamepad; clipboard-write; encrypted-media" '
+          + 'referrerpolicy="strict-origin-when-cross-origin"></iframe></div>'
+          + '<a id="hub" href="' + escapeAttr(CONFIG.logoLink) + '" target="_blank" '
+          + 'rel="noopener noreferrer" title="Open hub">'
+          + '<img src="' + escapeAttr(CONFIG.logo) + '" alt="Hub"></a>'
+          + '</body></html>';
+      }
+
+      function launch() {
+        var win = null;
+        try { win = window.open('about:blank', '_blank'); } catch (err) { win = null; }
+
+        // Blocked (or disabled by policy): tell the user exactly what to change.
+        if (!win) {
+          setStatus('Pop-ups are blocked, so the session could not open. Allow pop-ups for this site, then press “Open session” again.', 'err');
+          helpEl.open = true;
+          return;
+        }
+
+        var ready = false;
+
+        try {
+          win.document.open();
+          win.document.write(popupDocument());
+          win.document.close();
+          ready = true;
+        } catch (err) {
+          ready = false;
+        }
+
+        // If the injected document could not be written, fall back to loading
+        // the session directly in the popup window.
+        if (!ready) {
+          if (absoluteUrl(CONFIG.frame)) {
+            try { win.location.replace(CONFIG.frame); ready = true; } catch (err) { ready = false; }
+          }
+        }
+
+        if (!ready) {
+          try { win.close(); } catch (err) { /* ignore */ }
+          setStatus('Could not start the session in a new window. Use “Open in this tab” instead.', 'err');
+          helpEl.open = true;
+          return;
+        }
+
+        if (CONFIG.autoRedirect && !isEmbedded() && absoluteUrl(CONFIG.portal)) {
+          setStatus('Session opened. Redirecting to the student portal…', 'ok');
+          window.setTimeout(function () { location.replace(CONFIG.portal); }, CONFIG.redirectDelay);
+        } else {
+          setStatus('Session opened in a new window. You can close this tab.', 'ok');
+        }
+      }
+
+      launchBtn.addEventListener('click', launch);
+
+      inlineBtn.addEventListener('click', function () {
+        var target = absoluteUrl(CONFIG.frame);
+        if (!target) {
+          setStatus('The session address is not a valid http(s) URL.', 'err');
+          return;
+        }
+        location.href = target;
+      });
+
+      readOverrides();
+
+      if (isEmbedded()) {
+        setStatus('Preview mode — press “Open session” to launch.', '');
+      } else if (CONFIG.autoRedirect) {
+        // Browsers block window.open() that is not tied to a click, so this is
+        // a best-effort attempt: if it is blocked the UI below takes over.
+        launch();
+      } else {
+        setStatus('Ready. Press “Open session” to start.', '');
+      }
+    })();
+  </script>
 </body>
 </html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Page not found</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: #e9edf8;
+      font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: radial-gradient(1000px 600px at 50% -15%, #1b2a5c 0%, #0b1020 58%, #060912 100%);
+      text-align: center;
+    }
+    h1 { margin: 0 0 8px; font-size: 1.4rem; }
+    p { margin: 0 0 18px; color: #94a1c6; }
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 11px 20px;
+      border-radius: 12px;
+      display: inline-block;
+      background: linear-gradient(180deg, #5c88ff, #4f7cff);
+      box-shadow: 0 10px 26px rgba(79, 124, 255, 0.35);
+    }
+  </style>
+  <script>
+    // GitHub Pages serves this file for any path that does not exist. Send the
+    // visitor back to the site root (first path segment = the project pages root)
+    // instead of leaving them on GitHub's "File not found" screen.
+    (function () {
+      var segments = location.pathname.split('/').filter(Boolean);
+      var base = segments.length ? '/' + encodeURIComponent(segments[0]) + '/' : '/';
+
+      var link = document.getElementById('home');
+      if (!link) {
+        // The script runs in <head>, before the body exists; patch the link later.
+        document.addEventListener('DOMContentLoaded', function () {
+          var el = document.getElementById('home');
+          if (el) el.setAttribute('href', base);
+        });
+      } else {
+        link.setAttribute('href', base);
+      }
+
+      // Only redirect when there is a real root to go back to.
+      if (segments.length || location.hostname.endsWith('github.io')) {
+        location.replace(base);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <main>
+    <h1>Page not found</h1>
+    <p>That path isn't part of this site.</p>
+    <a id="home" href="./">Back to the launcher</a>
+  </main>
+</body>
+</html>
